@@ -1,4 +1,4 @@
-import ProductCard from "./ProductCart";
+import ProductCard from "./ProductCard";
 import { BiError } from "react-icons/bi";
 
 const Products = () => {
