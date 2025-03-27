@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 import { BiError } from "react-icons/bi";
 import { useEffect } from "react";
 import { fetchProducts } from "../store/actions";
-import Filter from "./Filter.jsx";
+import Filter from "./Filter";
 
     const Products = () => {
 
