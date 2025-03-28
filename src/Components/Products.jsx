@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
 import { BiError } from "react-icons/bi";
 import { useEffect } from "react";
-import { fetchProducts } from "../store/actions";
+import { fetchCategories, fetchProducts } from "../store/actions";
 import Filter from "./Filter";
+import useProductFilter from "./useProductFilter";
 
     const Products = () => {
 
@@ -11,13 +12,14 @@ import Filter from "./Filter";
         (state) => state.errors
     );
     
-    const {products} = useSelector(
+    const {products, categories} = useSelector(
     (state) => state.products
     );
     const dispatch = useDispatch();
+    useProductFilter();
 
     useEffect (() => {
-        dispatch(fetchProducts());
+        dispatch(fetchCategories());
     }, [dispatch]);
 
    
@@ -25,7 +27,7 @@ import Filter from "./Filter";
         return (
             <div className="flex flex-wrap lg:px-14 sm:px-8 px-4 py-14 2xl:w-[90%] 2xl:mx-auto">
                 <div className="w-full mb-6">
-                   <Filter />
+                   <Filter categories={categories ? categories : []}/>
                 </div>
                 {isLoading ? (
                     <p>It is loading...</p>
