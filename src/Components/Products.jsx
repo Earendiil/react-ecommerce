@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { fetchCategories, fetchProducts } from "../store/actions";
 import Filter from "./Filter";
 import useProductFilter from "./useProductFilter";
+import Loader from "./Loader";
 
     const Products = () => {
 
@@ -29,8 +30,9 @@ import useProductFilter from "./useProductFilter";
                 <div className="w-full mb-6">
                    <Filter categories={categories ? categories : []}/>
                 </div>
-                {isLoading ? (
-                    <p>It is loading...</p>
+                {true ? (
+                  <Loader text={"Products loading"} />
+                
                 ) : errorMessage ? (
                     <div className="flex justify-center items-center h-[200px]">
                         <BiError className="'text-slate-800 text-exl mr-2" />
