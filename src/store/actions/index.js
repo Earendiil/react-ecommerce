@@ -1,10 +1,15 @@
-import api from "../../api/api"
+import api from "../../api/api";
 
-export const fetchProducts = (queryString) => async (dispatch) =>{
-
+export const fetchProducts = (queryString, categoryId = null) => async (dispatch) => {
     try {
-        dispatch({ type: "IS_FETCHING"});
-        const { data } = await api.get(`/public/products?${queryString}`);
+        dispatch({ type: "IS_FETCHING" });
+
+        let endpoint = categoryId
+            ? `/public/categories/${categoryId}/products?${queryString}`
+            : `/public/products?${queryString}`;
+
+        const { data } = await api.get(endpoint);
+
         dispatch({
             type: "FETCH_PRODUCTS",
             payload: data.content,
@@ -14,35 +19,42 @@ export const fetchProducts = (queryString) => async (dispatch) =>{
             totalPages: data.totalPages,
             lastPage: data.lastPage,
         });
-        dispatch({ type: "IS_SUCCESS"});
+
+        dispatch({ type: "IS_SUCCESS" });
 
     } catch (error) {
-        console.log(error);
-        dispatch({ type: "IS_ERROR",
-                   payload: error?.response?.data?.message || "Failed to fetch products"
+        console.error("❌ Fetch Products Error:", error.response || error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch products",
         });
     }
-}
-export const fetchCategories = (queryString) => async (dispatch) =>{
+};
 
+
+export const fetchCategories = () => async (dispatch) => {
     try {
-        dispatch({ type: "CATEGORY_LOADER"});
+        dispatch({ type: "CATEGORY_LOADER" });
+
         const { data } = await api.get(`/public/categories`);
+
         dispatch({
             type: "FETCH_CATEGORIES",
             payload: data.content,
-            pageNumber: data.pageNumber,
-            pageSize: data.pageSize,
-            totalElements: data.totalElements,
-            totalPages: data.totalPages,
-            lastPage: data.lastPage,
         });
-        dispatch({ type: "IS_ERROR"});
+
+        // Optionally fetch products for the first category
+        if (data.content.length > 0) {
+            dispatch(fetchProducts("", data.content[0].categoryId));
+        }
+
+        dispatch({ type: "IS_SUCCESS" });
 
     } catch (error) {
-        console.log(error);
-        dispatch({ type: "IS_ERROR",
-                   payload: error?.response?.data?.message || "Failed to fetch categories"
+        console.error("❌ Fetch Categories Error:", error.response || error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch categories",
         });
     }
-}
+};

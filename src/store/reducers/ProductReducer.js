@@ -1,39 +1,32 @@
-
 const initialState = {
-    products: null,
-    categories: null,
+    products: [],      
+    categories: [],    
     pagination: {},
 };
 
 export const productReducer = (state = initialState, action) => {
-
-
-    switch (action.type){
+    switch (action.type) {
         case "FETCH_PRODUCTS":
             return {
-                ...state, 
+                ...state,
                 products: action.payload,
-                pagination:{
+                pagination: {
                     ...state.pagination,
-                    pageNumber:action.pageNumber,
+                    pageNumber: action.pageNumber,
                     pageSize: action.pageSize,
                     totalElements: action.totalElements,
-                    totalpages: action.totalpages,
+                    totalPages: action.totalPages,  
                     lastPage: action.lastPage,
-                }
+                },
             };
 
-            case "FETCH_CATEGORIES":
-                    return {
-                        ...state, 
-                       categories: action.payload,
-                        };
-                    
-                   
-            default:
-                return state;
-        };
+        case "FETCH_CATEGORIES":
+            return {
+                ...state,
+                categories: action.payload,
+            };
 
-        
-
+        default:
+            return state;
+    }
 };
