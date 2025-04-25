@@ -1,6 +1,6 @@
 import api from "../../api/api";
 
-export const fetchProducts = (queryString, categoryId = null) => async (dispatch) => {
+export const fetchProducts = (queryString, categoryId ) => async (dispatch) => {
     try {
         dispatch({ type: "IS_FETCHING" });
 
